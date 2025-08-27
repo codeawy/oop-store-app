@@ -45,15 +45,15 @@ export class Cart {
   }
 
   getItems(): CartItem[] {
-    return [];
+    return [...this.items];
   }
 
   getTotalPrice(): number {
-    return 1000;
+    return this.items.reduce((total, item) => total + item.getTotalPrice(), 0);
   }
 
   isEmpty(): boolean {
-    return true;
+    return this.items.length === 0;
   }
 
   clear(): void {
@@ -61,10 +61,26 @@ export class Cart {
   }
 
   getItemCount(): number {
-    return 1;
+    return this.items.reduce((count, item) => count + item.quantity, 0);
   }
 
+  // Method to reduce stock when checkout occurs
   reduceStockOnCheckout(): boolean {
-    return false;
+    // Check if all items are still available
+    for (const item of this.items) {
+      if (item.quantity > item.product.stock) {
+        return false; // Not enough stock available
+      }
+    }
+
+    // If all items ara available, reduce the stock
+    for (const item of this.items) {
+      if (!item.product.reduceStock(item.quantity)) {
+        // This shouldn't happen if we checked above, but just in case
+        return false;
+      }
+    }
+
+    return true;
   }
 }
