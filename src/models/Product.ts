@@ -49,7 +49,3 @@ export class Product {
     }
   }
 }
-
-const product = new Product("My Product", 22, 44, "Physical");
-
-console.log(product.price);
