@@ -1,8 +1,10 @@
+import { CustomerPermission, UserType } from "../types/user";
+
 /**
  * Abstract Class for all users types
  * - Cannot be Instantiated directly
  */
-abstract class User {
+export abstract class User {
   private static _nextUserId: number;
 
   constructor(
@@ -12,8 +14,8 @@ abstract class User {
   ) {}
 
   // Methods
-  abstract getRole(): string;
-  abstract getPermissions(): string[];
+  abstract getRole(): UserType;
+  abstract getPermissions(): CustomerPermission[];
 
   // Concrete method - shared by all subclasses
   public getInfo(): string {
