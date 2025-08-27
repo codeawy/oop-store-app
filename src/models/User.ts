@@ -5,13 +5,12 @@ import { CustomerPermission, UserType } from "../types/user";
  * - Cannot be Instantiated directly
  */
 export abstract class User {
+  protected readonly userId: number;
   private static _nextUserId: number;
 
-  constructor(
-    protected readonly userId: number,
-    protected _name: string,
-    protected _email: string
-  ) {}
+  constructor(protected _name: string, protected _email: string) {
+    this.userId = User._nextUserId++;
+  }
 
   // Methods
   abstract getRole(): UserType;
