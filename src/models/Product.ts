@@ -48,4 +48,15 @@ export class Product {
       throw new Error("Stock cannot be negative!");
     }
   }
+
+  reduceStock(quantity: number): boolean {
+    if (this._stock >= quantity) {
+      // stock => 20 => product qty => 5
+      this._stock -= quantity;
+
+      return true;
+    }
+
+    return false;
+  }
 }
