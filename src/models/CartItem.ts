@@ -8,7 +8,7 @@ export class CartItem {
 
   // Getters
   get quantity(): number {
-    return this.quantity;
+    return this._quantity;
   }
 
   // Setters
