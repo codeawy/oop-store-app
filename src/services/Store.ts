@@ -126,7 +126,7 @@ export class Store {
       throw new Error("Product is required");
     }
 
-    if (this.products.some((p) => p.id === product.id)) {
+    if (this.products.some((p) => p._id === product._id)) {
       throw new Error("Product already exists");
     }
 
@@ -139,7 +139,7 @@ export class Store {
    * @returns true if product was removed, false if not found
    */
   public removeProduct(productId: number): boolean {
-    const index = this.products.findIndex((p) => p.id === productId);
+    const index = this.products.findIndex((p) => p._id === productId);
     if (index > -1) {
       this.products.splice(index, 1);
       return true;
@@ -166,7 +166,7 @@ export class Store {
       throw new Error("Invalid product ID");
     }
 
-    return this.products.find((p) => p.id === id);
+    return this.products.find((p) => p._id === id);
   }
 
   /**
