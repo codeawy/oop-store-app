@@ -67,8 +67,8 @@ export class Customer extends User {
   /**
    * Returns a copy of all customer orders
    */
-  getOrderHistory(): Order[] {
-    return [];
+  get orderHistory(): Order[] {
+    return this.orders;
   }
 
   /**
@@ -76,8 +76,8 @@ export class Customer extends User {
    * @param count - Number of recent orders to return
    * @returns Array of recent orders
    */
-  getRecentOrders(count: number = 5): Order[] {
-    return [];
+  get recentOrders(): Order[] {
+    return this.orders.slice(-5);
   }
 
   /**
