@@ -1,7 +1,7 @@
 import { Category } from "../types/category";
 
 export class Product {
-  public readonly id: number;
+  protected readonly _id: number;
 
   private static nextId: number = 1;
 
@@ -12,10 +12,14 @@ export class Product {
     private _stock: number,
     private _category: Category
   ) {
-    this.id = Product.nextId++;
+    this._id = Product.nextId++;
   }
 
   // Getters
+  get id(): number {
+    return this._id;
+  }
+
   get name(): string {
     return this._name;
   }
