@@ -38,6 +38,10 @@ export class Store {
     return this.orders.length;
   }
 
+  public getOrders(): Order[] {
+    return [...this.orders];
+  }
+
   // Setters with validation
   set storeName(storeName: string) {
     if (!storeName || storeName.trim().length === 0) {
@@ -130,6 +134,20 @@ export class Store {
   }
 
   /**
+   * Remove a product from the store
+   * @param productId - The ID of the product to remove
+   * @returns true if product was removed, false if not found
+   */
+  public removeProduct(productId: number): boolean {
+    const index = this.products.findIndex((p) => p.id === productId);
+    if (index > -1) {
+      this.products.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Returns a copy of all products
    * @returns A copy of all products
    */
@@ -166,5 +184,52 @@ export class Store {
     return `${user.getInfo()} - Permissions: ${user
       .getPermissions()
       .join(", ")}`;
+  }
+
+  /**
+   * Process and store a new order
+   * @param order - The order to process
+   * @throws Error if store is closed or order is invalid
+   */
+  public processOrder(order: Order): void {
+    if (!this._isOpen) {
+      throw new Error("Store is currently closed");
+    }
+    if (!order) {
+      throw new Error("Order cannot be null or undefined");
+    }
+
+    if (order.customer.id !== order.customer.id) {
+      throw new Error("Order customer ID does not match customer ID");
+    }
+
+    this.orders.push(order);
+  }
+
+  /**
+   * Gets the store statistics
+   * @returns The store statistics
+   */
+  private getStoreStats(): string {
+    return `${this._storeName} Statistics:
+            Store Status: ${this._isOpen ? "Open" : "Closed"}
+            Total Products: ${this.products.length}
+            Total Users: ${this.users.length}
+            Total Customers: ${
+              this.users.filter((u) => u.getRole() === "Customer").length
+            }
+            Total Admins: ${
+              this.users.filter((u) => u.getRole() === "Admin").length
+            }
+            Total Orders: ${this.orders.length}
+            Total Revenue: $${this.orders.reduce(
+              (total, order) => total + order.total,
+              0
+            )}
+            Average Order Value: $${
+              this.orders.reduce((total, order) => total + order.total, 0) /
+              this.orders.length
+            }
+            Products Created: ${this.products.length}`;
   }
 }
