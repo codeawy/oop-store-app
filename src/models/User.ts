@@ -23,6 +23,10 @@ export abstract class User {
   }
 
   // Getters
+  get id(): number {
+    return this.userId;
+  }
+
   get name(): string {
     return this._name;
   }

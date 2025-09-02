@@ -17,6 +17,7 @@ export class Store {
   }
 
   // Getters
+
   get storeName(): string {
     return this._storeName;
   }
@@ -106,5 +107,64 @@ export class Store {
   private isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  }
+
+  /**
+   * Adds a product to the store
+   * @param product - The product to add
+   */
+  public addProduct(product: Product): void {
+    if (!this._isOpen) {
+      throw new Error("Store is closed");
+    }
+
+    if (!product) {
+      throw new Error("Product is required");
+    }
+
+    if (this.products.some((p) => p.id === product.id)) {
+      throw new Error("Product already exists");
+    }
+
+    this.products.push(product);
+  }
+
+  /**
+   * Returns a copy of all products
+   * @returns A copy of all products
+   */
+  public getProducts(): Product[] {
+    return [...this.products];
+  }
+
+  /**
+   * Finds a product by its ID
+   * @param id - The ID of the product to find
+   * @returns The product if found, undefined otherwise
+   */
+  public findProductById(id: number): Product | undefined {
+    // Check if id is a positive integer
+    if (!Number.isInteger(id) || id <= 0) {
+      throw new Error("Invalid product ID");
+    }
+
+    return this.products.find((p) => p.id === id);
+  }
+
+  /**
+   * Gets user information
+   * @param userId - The ID of the user to get information for
+   * @returns The user information
+   */
+  public getUserInfo(userId: number): string {
+    const user = this.users.find((user) => user.id === userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return `${user.getInfo()} - Permissions: ${user
+      .getPermissions()
+      .join(", ")}`;
   }
 }
