@@ -1,6 +1,8 @@
+import { Customer } from "../models/Customer";
 import { Order } from "../models/Order";
 import { Product } from "../models/Product";
 import { User } from "../models/User";
+import { Admin } from "../models/Admin";
 
 export class Store {
   // Attributes
@@ -54,5 +56,55 @@ export class Store {
     }
 
     this._isOpen = isOpen;
+  }
+
+  // Methods
+  /**
+   * Registers a new user
+   * @param name - The name of the user
+   * @param email - The email of the user
+   * @param isAdmin - Whether the user is an admin
+   * @returns The new user
+   */
+  public registerUser(
+    name: string,
+    email: string,
+    isAdmin: boolean = false
+  ): User {
+    if (!this._isOpen) {
+      throw new Error("Store is closed");
+    }
+
+    if (!name || name.trim().length === 0) {
+      throw new Error("Name cannot be empty");
+    }
+
+    if (!email || !this.isValidEmail(email)) {
+      throw new Error("Invalid email");
+    }
+
+    if (this.users.some((user) => user.email === email)) {
+      throw new Error("User already exists");
+    }
+
+    if (isAdmin) {
+      const newAdmin = new Admin(name, email);
+      this.users.push(newAdmin);
+      return newAdmin;
+    } else {
+      const newCustomer = new Customer(name, email);
+      this.users.push(newCustomer);
+      return newCustomer;
+    }
+  }
+
+  /**
+   * Validates an email address
+   * @param email - The email address to validate
+   * @returns True if the email address is valid, false otherwise
+   */
+  private isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 }

@@ -1,3 +1,4 @@
+import { AdminPermission } from "../types/admin";
 import { CustomerPermission, UserType } from "../types/user";
 
 /**
@@ -14,7 +15,7 @@ export abstract class User {
 
   // Methods
   abstract getRole(): UserType;
-  abstract getPermissions(): CustomerPermission[];
+  abstract getPermissions(): CustomerPermission[] | AdminPermission[];
 
   // Concrete method - shared by all subclasses
   public getInfo(): string {
